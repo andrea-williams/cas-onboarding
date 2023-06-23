@@ -2,24 +2,28 @@ import React from 'react';
 import logo from './logo.svg';
 import graphql from 'babel-plugin-relay/macro'
 import './App.css';
+import TodoItem from './components/TodoListItem';
+import TodoList from './components/TodoList'
+import { loadQuery, useLazyLoadQuery } from 'react-relay';
+import { RelayEnvironment } from './RelayEnvironment';
 
-function App() {
+const AllTodosQuery = graphql`
+  query AppQuery {
+    ...TodoList_query
+  }
+`
+
+function App(props: any) {
+  const data = useLazyLoadQuery(AllTodosQuery, {})
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
+      <body>
+        <TodoList query={data} />
+      </body>
     </div>
   );
 }
